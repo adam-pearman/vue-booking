@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Api\v1\BookingAvailabilityController;
 use App\Http\Controllers\Api\v1\BookingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,4 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function () {
     Route::apiResource('bookings', BookingController::class)->only(['index', 'show']);
+    Route::get('/bookings/{booking}/availability', BookingAvailabilityController::class)
+        ->name('bookings.availability.show');
 });
