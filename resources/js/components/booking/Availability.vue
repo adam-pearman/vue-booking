@@ -1,6 +1,6 @@
 <template>
-    <div class="text-left">
-        <h1 class="text-lg leading-6 font-medium text-gray-900 pb-3">
+    <div class="text-left p-4">
+        <h1 class="text-xl leading-6 font-medium text-gray-900 pb-3">
             Check Availability
             <span v-if="noAvailability" class="text-red-600">
                 - NOT AVAILABLE
@@ -50,18 +50,16 @@
 
 <script setup>
 import {ref, computed} from "vue";
-import {useRoute} from "vue-router";
 
-const route = useRoute();
-const bookingId = route.params.id;
+const props = defineProps({
+    bookingId: String
+});
+
 const loading = ref(false);
-
 const from = ref('');
 const to = ref('');
-
 const status = ref(null);
 const errors = ref(null);
-
 const hasErrors = computed(() => status.value === 422 && errors.value !== null);
 const hasAvailability = computed(() => status.value === 200);
 const noAvailability = computed(() => status.value === 404);
@@ -70,7 +68,7 @@ function check() {
     loading.value = true;
     errors.value = null;
 
-    axios.get(`/api/v1/bookings/${bookingId}/availability?from=${from.value}&to=${to.value}`)
+    axios.get(`/api/v1/bookings/${props.bookingId}/availability?from=${from.value}&to=${to.value}`)
         .then(response => status.value = response.status)
         .catch(error => {
             if (error.response.status === 422) {

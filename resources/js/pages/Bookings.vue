@@ -25,12 +25,17 @@ import axios from 'axios';
 import {ref} from 'vue';
 import BookingsDetail from '../components/bookings/BookingsDetail.vue';
 
-const loading = ref(true);
+const loading = ref(false);
 const bookings = ref([]);
 
-axios.get('/api/v1/bookings')
-    .then(response => {
-        bookings.value = response.data.data;
-        loading.value = false;
-    });
+function getBookings() {
+    loading.value = true;
+    axios.get('/api/v1/bookings')
+        .then(response => {
+            bookings.value = response.data.data;
+            loading.value = false;
+        });
+}
+
+getBookings();
 </script>

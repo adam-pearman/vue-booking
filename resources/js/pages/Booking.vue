@@ -1,20 +1,22 @@
 <template>
-    <div class="container mx-auto text-center">
-        <div v-if="loading">
+    <div class="container mx-auto">
+        <div v-if="loading" class="text-center">
             <p>Loading...</p>
         </div>
-        <div v-else class="grid grid-cols-3 gap-10 w-3/4 mx-auto pb-5">
-            <BaseCard class="col-span-2 text-left">
-                <div class="bg-white pb-2 mb-2 border-b border-gray-200">
-                    <h1 class="text-lg leading-6 font-medium text-gray-900">{{ booking.title }}</h1>
+        <div v-else class="grid grid-cols-3 gap-10 w-3/4 mx-auto">
+            <BaseCard class="col-span-2">
+                <div class="bg-white pb-4 mb-4 border-b border-gray-200">
+                    <h1 class="text-xl font-medium text-gray-900">{{ booking.title }}</h1>
                 </div>
                 <p>{{ booking.description }}</p>
             </BaseCard>
             <div>
-                <availability></availability>
-                <p>£{{ booking.price }}</p>
+                <availability :booking-id="bookingId"></availability>
+                <p class="text-center">£{{ booking.price }}</p>
             </div>
-
+            <div class="col-span-2">
+                <ReviewList :booking-id="bookingId"></ReviewList>
+            </div>
         </div>
     </div>
 </template>
@@ -25,15 +27,21 @@ import {ref} from 'vue';
 import axios from 'axios';
 import BaseCard from '../components/ui/BaseCard.vue';
 import Availability from "../components/booking/Availability";
+import ReviewList from "../components/booking/ReviewList";
 
 const route = useRoute();
-const bookingId = route.params.id;
-const loading = ref(true);
+const bookingId = route.params.id ;
+const loading = ref(false);
 const booking = ref({});
 
-axios.get(`/api/v1/bookings/${bookingId}`)
-    .then(response => {
-        booking.value = response.data.data;
-        loading.value = false;
-    });
+function getBooking() {
+    loading.value = true;
+    axios.get(`/api/v1/bookings/${bookingId}`)
+        .then(response => {
+            booking.value = response.data.data;
+            loading.value = false;
+        });
+}
+
+getBooking();
 </script>

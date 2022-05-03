@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             BookingSeeder::class,
-            ReservationSeeder::class
+            ReservationSeeder::class,
+            ReviewSeeder::class
         ]);
     }
 }

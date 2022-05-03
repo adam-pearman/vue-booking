@@ -9,9 +9,9 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
     id: Number,
-    title: String, 
+    title: String,
     description: String,
     price: Number,
 });
