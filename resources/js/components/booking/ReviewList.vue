@@ -14,11 +14,7 @@
             >
                 <p class="font-medium">Anonymous</p>
                 <div class="justify-self-end">
-                    <span v-for="i in 5">
-                        <IconStar class="inline stroke-gray-600 stroke-2 w-6 h-6"
-                                  :class="i <= review.rating ? 'fill-gray-500' : 'fill-gray-200'">
-                        </IconStar>
-                    </span>
+                    <StarRating :rating="parseFloat(review.rating)"></StarRating>
                 </div>
 
                 <p class="italic">{{ commentTime(review.created_at) }} ago</p>
@@ -31,7 +27,7 @@
 <script setup>
 import {ref} from "vue";
 import {formatDistanceToNowStrict} from "date-fns"
-import IconStar from "../icons/IconStar";
+import StarRating from "../ui/StarRating";
 
 const props = defineProps({
     bookingId: String

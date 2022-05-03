@@ -20,7 +20,7 @@ class ReviewFactory extends Factory
         return [
             'id' => Str::uuid(),
             'content' => $this->faker->sentences(5, true),
-            'rating' => random_int(1, 5)
+            'rating' => $this->faker->randomFloat(1,1, 5)
         ];
     }
 }

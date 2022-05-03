@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->unsignedTinyInteger('rating');
+            $table->decimal('rating', 2, 1, true);
             $table->text('content');
             $table->foreignIdFor(Booking::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Reservation::class)->nullable()->constrained()->cascadeOnDelete();
