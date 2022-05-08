@@ -3,14 +3,14 @@
         <div v-if="loading" class="text-center">
             <p>Loading...</p>
         </div>
-        <div v-else class="grid grid-cols-3 gap-10 w-3/4 mx-auto">
+        <div v-else class="grid xl:grid-cols-3 gap-10 w-3/4 mx-auto">
             <BaseCard class="col-span-2">
                 <div class="bg-white pb-4 mb-4 border-b border-gray-200">
                     <h1 class="text-xl font-medium text-gray-900">{{ booking.title }}</h1>
                 </div>
                 <p>{{ booking.description }}</p>
             </BaseCard>
-            <div>
+            <div class="col-span-2 xl:col-span-1">
                 <availability :booking-id="bookingId"></availability>
                 <p class="text-center">£{{ booking.price }}</p>
             </div>
