@@ -21,14 +21,14 @@ const fraction = Math.round(
 );
 
 const fullStars = computed(() => {
-   return fraction > 0 && fraction < 70 && fraction !== 0 ? Math.ceil(props.rating) - 1 : Math.ceil(props.rating);
+   return fraction > 0 && fraction < 80 && fraction !== 0 ? Math.ceil(props.rating) - 1 : Math.ceil(props.rating);
 });
 
 const halfStar = computed(() => {
-    return fraction > 30 && fraction < 70;
+    return fraction > 20 && fraction < 80;
 });
 
 const emptyStars = computed(() => {
-    return fraction > 0 && fraction < 40 ? 6 - Math.ceil(props.rating) : 5 - Math.ceil(props.rating);
+    return fraction > 0 && fraction < 30 ? 6 - Math.ceil(props.rating) : 5 - Math.ceil(props.rating);
 })
 </script>
