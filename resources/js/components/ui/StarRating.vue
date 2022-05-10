@@ -1,8 +1,16 @@
 <template>
 <div class="fill-gray-500">
-    <IconFullStar v-for="star in fullStars" class="inline w-6 h-6"></IconFullStar>
-    <IconHalfStar v-if="halfStar" class="inline w-6 h-6"></IconHalfStar>
-    <IconEmptyStar v-for="star in emptyStars" class="inline w-6 h-6"></IconEmptyStar>
+    <IconFullStar v-for="star in fullStars"
+                  :class="'inline w-' + props.size + ' h-auto'"
+                  @click="$emit('update:rating', star)"
+    />
+    <IconHalfStar v-if="halfStar"
+                  :class="'inline w-' + props.size + ' h-auto'"
+    />
+    <IconEmptyStar v-for="star in emptyStars"
+                   :class="'inline w-' + props.size + ' h-auto'"
+                   @click="$emit('update:rating', fullStars + star)"
+    />
 </div>
 </template>
 
@@ -13,8 +21,13 @@ import IconHalfStar from '../icons/IconHalfStar';
 import IconEmptyStar from '../icons/IconEmptyStar';
 
 const props = defineProps({
-    rating: Number
+    rating: Number,
+    size: Number
 });
+
+const emit = defineEmits([
+    'update:rating'
+]);
 
 const fraction = Math.round(
     (props.rating - Math.floor(props.rating)) * 100

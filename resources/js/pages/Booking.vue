@@ -25,7 +25,7 @@
 import {useRoute} from 'vue-router';
 import {ref} from 'vue';
 import axios from 'axios';
-import BaseCard from '../components/ui/BaseCard.vue';
+import BaseCard from '../components/ui/BaseCard';
 import Availability from "../components/booking/Availability";
 import ReviewList from "../components/booking/ReviewList";
 
