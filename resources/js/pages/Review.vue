@@ -3,7 +3,7 @@
         <h1 class="text-4xl font-medium pb-5 text-center">Review</h1>
         <form @submit.prevent="testFunc" class="grid grid-cols-1 place-content-center w-3/4 mx-auto">
             <label class="mb-2">Select the star rating (1 is worst - 5 is best)</label>
-            <StarRating v-model:rating="rating" :size="10" class="mb-6"/>
+            <StarRating v-model:rating="rating" :size="48" class="mb-6"/>
             <label for="content" class="mb-2">Describe your experience with</label>
             <textarea name="content" id="content" cols="30" rows="10" class="mb-6" v-model="content"></textarea>
             <button type="submit"
@@ -18,13 +18,31 @@
 
 <script setup>
 import StarRating from '../components/ui/StarRating';
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import {useRoute} from "vue-router";
 
+const route = useRoute();
+const reviewId = route.params.id;
+const existingReview = ref(null);
 const rating = ref(5);
 const content = ref('');
+
+const alreadyReviewed = computed(() => {
+    return existingReview.value !== null;
+})
+
+function checkReview() {
+    axios.get(`api/v1/reviews/${reviewId}`)
+        .then(response => existingReview.value = response.data.data)
+        .catch(error => {
+        //
+        });
+}
 
 function testFunc() {
     console.log(rating.value);
     console.log(content.value);
 }
+
+checkReview();
 </script>
