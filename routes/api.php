@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\v1\BookingAvailabilityController;
 use App\Http\Controllers\Api\v1\BookingController;
 use App\Http\Controllers\Api\v1\BookingReviewController;
+use App\Http\Controllers\Api\v1\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +28,5 @@ Route::prefix('v1')->group(function () {
         ->name('bookings.availability.show');
     Route::get('/bookings/{booking}/reviews', BookingReviewController::class)
         ->name('bookings.reviews.index');
+    Route::get('/reviews/{review}', [ReviewController::class, 'show']);
 });
