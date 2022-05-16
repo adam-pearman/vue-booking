@@ -14,7 +14,7 @@
             >
                 <p class="font-medium">Anonymous</p>
                 <div class="justify-self-end">
-                    <StarRating :rating="parseFloat(review.rating)" :size="6"></StarRating>
+                    <StarRating :rating="parseFloat(review.rating)" :size="32"></StarRating>
                 </div>
 
                 <p class="italic">{{ commentTime(review.created_at) }} ago</p>

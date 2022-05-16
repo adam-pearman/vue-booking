@@ -1,14 +1,17 @@
 <template>
 <div class="fill-gray-500">
     <IconFullStar v-for="star in fullStars"
-                  :class="'inline w-' + props.size + ' h-auto'"
+                  class="inline"
+                  :size="props.size"
                   @click="$emit('update:rating', star)"
     />
     <IconHalfStar v-if="halfStar"
-                  :class="'inline w-' + props.size + ' h-auto'"
+                  class="inline"
+                  :size="props.size"
     />
     <IconEmptyStar v-for="star in emptyStars"
-                   :class="'inline w-' + props.size + ' h-auto'"
+                   class="inline"
+                   :size="props.size"
                    @click="$emit('update:rating', fullStars + star)"
     />
 </div>
