@@ -15,10 +15,11 @@ class ReservationByReviewController extends Controller
      *
      * @param Request $request
      * @param $reviewKey
-     * @return AnonymousResourceCollection
+     * @return ReservationByReviewShowResource
      */
-    public function __invoke(Request $request, $reviewKey): AnonymousResourceCollection
+    public function __invoke(Request $request, $reviewKey): ReservationByReviewShowResource
     {
-        return ReservationByReviewShowResource::collection(Reservation::findByReviewKey($reviewKey)) ?? abort(404);
+        $reservation = Reservation::findByReviewKey($reviewKey);
+        return $reservation ? new ReservationByReviewShowResource($reservation) : abort(404);
     }
 }
