@@ -12,7 +12,8 @@ class Review extends Model
 
     protected $fillable = [
         'rating',
-        'content'
+        'content',
+        'id'
     ];
 
     public function booking(): BelongsTo
