@@ -33,5 +33,5 @@ Route::prefix('v1')->group(function () {
     Route::get('/reservation-by-review/{reviewKey}', ReservationByReviewController::class)
         ->name('reservation.by-review.show');
 
-    Route::get('/reviews/{review}', [ReviewController::class, 'show']);
+    Route::apiResource('reviews', ReviewController::class)->only(['store', 'show']);
 });
