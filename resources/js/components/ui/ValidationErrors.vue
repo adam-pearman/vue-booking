@@ -7,7 +7,6 @@
 <script setup>
 const props = defineProps({
     errors: {
-        type: Array,
         required: true,
     }
 })
