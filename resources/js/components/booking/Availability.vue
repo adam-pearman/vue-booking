@@ -20,9 +20,7 @@
                     v-model="from"
                     :class="{'border-red-600': errorFor('from')}"
                 >
-                <div class="text-red-600" v-for="error in errorFor('from')">
-                    {{ error }}
-                </div>
+                <ValidationErrors :errors="errorFor('from')"/>
             </div>
             <div>
                 <label for="to" class="block">To</label>
@@ -34,9 +32,7 @@
                     v-model="to"
                     :class="{'border-red-600': errorFor('to')}"
                 >
-                <div class="text-red-600" v-for="error in errorFor('to')">
-                    {{ error }}
-                </div>
+                <ValidationErrors :errors="errorFor('to')"/>
             </div>
             <button type="submit"
                     class="col-span-2 px-4 py-2 border border-gray-500 shadow-sm text-base
@@ -50,6 +46,8 @@
 
 <script setup>
 import {ref, computed} from "vue";
+import {useIsError} from "../../utils/useMethods";
+import ValidationErrors from "../ui/ValidationErrors";
 
 const props = defineProps({
     bookingId: String
@@ -71,7 +69,7 @@ function check() {
     axios.get(`/api/v1/bookings/${props.bookingId}/availability?from=${from.value}&to=${to.value}`)
         .then(response => status.value = response.status)
         .catch(error => {
-            if (error.response.status === 422) {
+            if (useIsError(error, 422)) {
                 errors.value = error.response.data.errors;
             }
             status.value = error.response.status;
