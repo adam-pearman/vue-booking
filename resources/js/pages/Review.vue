@@ -38,11 +38,20 @@
                         <label class="mb-2">Select the star rating (1 is worst - 5 is best)</label>
                         <StarRating v-model:rating="review.rating" :size="48" class="mb-6"/>
                         <label for="content" class="mb-2">Describe your experience with {{reservation.booking.title}}</label>
-                        <textarea name="content" id="content" cols="30" rows="10" class="mb-6 rounded-lg" v-model="review.content"></textarea>
+                        <textarea name="content"
+                                  id="content"
+                                  cols="30"
+                                  rows="10"
+                                  class="rounded-lg"
+                                  v-model="review.content"
+                                  :class="{'border-red-600': errorFor('content')}"
+                        ></textarea>
+                        <ValidationErrors :errors="errorFor('content')"/>
                         <button type="submit"
-                                class="px-4 py-2 border border-gray-500 shadow-sm text-base
+                                class="px-4 py-2 mt-6 border border-gray-500 shadow-sm text-base
                                 font-medium rounded-md text-white bg-gray-500 hover:bg-gray-300 focus:outline-none
-                                focus:ring-2 focus:ring-indigo-500">
+                                focus:ring-2 focus:ring-indigo-500"
+                                :disabled="sending">
                             Submit
                         </button>
                     </form>
@@ -57,14 +66,18 @@ import StarRating from '../components/ui/StarRating';
 import {computed, ref} from "vue";
 import {useRoute} from "vue-router";
 import BaseCard from "../components/ui/BaseCard";
-import {is404} from "../utils/response";
+import {useIsError} from "../utils/useMethods";
 import FatalError from "../components/ui/FatalError";
+import ValidationErrors from "../components/ui/ValidationErrors";
+import _ from "lodash";
 
 const route = useRoute();
 const existingReview = ref(null);
 const reservation = ref(null);
 const loading = ref(false);
 const error = ref(false);
+const errors = ref(null);
+const sending = ref(false);
 
 const review = ref({
     id: null,
@@ -96,13 +109,13 @@ function checkReview() {
             existingReview.value = response.data.data
         })
         .catch(err => {
-            if (is404(err)) {
+            if (useIsError(err, 404)) {
                 return axios.get(`/api/v1/reservation-by-review/${review.value.id}`)
                     .then(response => {
                         reservation.value = response.data.data;
                     })
                     .catch(err => {
-                        error.value = !is404(err);
+                        error.value = !useIsError(err, 404);
                     });
             }
         })
@@ -110,11 +123,28 @@ function checkReview() {
 }
 
 function submit() {
-    loading.value = true;
+    errors.value = null;
+    sending.value = true;
     axios.post(`/api/v1/reviews`, review.value)
         .then(response => console.log(response))
-        .catch(err => error.value = true)
-        .then(() => loading.value = false);
+        .catch(err => {
+            if (useIsError(err, 422)) {
+                const errs = err.response.data.errors;
+                if (errs['content'] && _.size(errs) === 1) {
+                    errors.value = errs;
+                    return;
+                }
+            }
+            error.value = true;
+        })
+        .then(() => {
+            console.log(errors.value)
+            return sending.value = false
+        });
+}
+
+function errorFor(field) {
+    return errors.value !== null && errors.value[field] ? errors.value[field] : null;
 }
 
 checkReview();
