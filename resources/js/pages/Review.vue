@@ -122,7 +122,6 @@ async function checkReview() {
 function submit() {
     errors.value = null;
     sending.value = true;
-    review.value.rating = 6;
     axios.post(`/api/v1/reviews`, review.value)
         .then(response => success.value = response.status === 201)
         .catch(err => {
