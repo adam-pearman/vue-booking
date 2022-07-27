@@ -28,6 +28,9 @@ import axios from 'axios';
 import BaseCard from '../components/ui/BaseCard';
 import Availability from "../components/booking/Availability";
 import ReviewList from "../components/booking/ReviewList";
+import {useBookingStore} from "../stores/booking";
+
+const bookingStore = useBookingStore();
 
 const route = useRoute();
 const bookingId = route.params.id ;
@@ -43,5 +46,6 @@ function getBooking() {
         });
 }
 
+bookingStore.loadStoredSearch();
 getBooking();
 </script>

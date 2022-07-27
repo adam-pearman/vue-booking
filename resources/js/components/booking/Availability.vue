@@ -48,14 +48,17 @@
 import {ref, computed} from "vue";
 import {useIsError} from "../../utils/useMethods";
 import ValidationErrors from "../ui/ValidationErrors";
+import {useBookingStore} from "../../stores/booking";
 
 const props = defineProps({
     bookingId: String
 });
 
+const bookingStore = useBookingStore();
+
 const loading = ref(false);
-const from = ref('');
-const to = ref('');
+const from = ref(bookingStore.lastSearch.from);
+const to = ref(bookingStore.lastSearch.to);
 const status = ref(null);
 const errors = ref(null);
 const hasErrors = computed(() => status.value === 422 && errors.value !== null);
@@ -65,6 +68,11 @@ const noAvailability = computed(() => status.value === 404);
 function check() {
     loading.value = true;
     errors.value = null;
+
+    bookingStore.setLastSearch({
+        from: from.value,
+        to: to.value,
+    })
 
     axios.get(`/api/v1/bookings/${props.bookingId}/availability?from=${from.value}&to=${to.value}`)
         .then(response => status.value = response.status)
