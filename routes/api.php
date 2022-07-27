@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\v1\BookingAvailabilityController;
+use App\Http\Controllers\Api\v1\BookingPriceController;
 use App\Http\Controllers\Api\v1\ReservationByReviewController;
 use App\Http\Controllers\Api\v1\BookingController;
 use App\Http\Controllers\Api\v1\BookingReviewController;
@@ -29,6 +30,8 @@ Route::prefix('v1')->group(function () {
         ->name('bookings.availability.show');
     Route::get('/bookings/{booking}/reviews', BookingReviewController::class)
         ->name('bookings.reviews.index');
+    Route::get('/bookings/{booking}/price', BookingPriceController::class)
+        ->name('bookings.price.show');
 
     Route::get('/reservation-by-review/{reviewKey}', ReservationByReviewController::class)
         ->name('reservation.by-review.show');
