@@ -12,7 +12,20 @@
             </BaseCard>
             <div class="col-span-2 xl:col-span-1">
                 <availability :booking-id="bookingId" @availability="checkPrice"></availability>
-                <p class="text-center font-medium">£{{ booking.price }}</p>
+                <div class="grid grid-cols-2">
+                    <Transition enter-active-class="transition-opacity duration-500"
+                                enter-from-class="opacity-0"
+                                leave-active-class="transition-opacity duration-0"
+                                leave-to-class="opacity-0">
+                        <button v-if="price"
+                                type="submit"
+                                class="col-span-2 mx-4 px-4 py-2 border border-gray-500 shadow-sm text-base
+                            font-medium rounded-md text-gray-500 300 hover:bg-gray-500 hover:text-white focus:outline-none focus:ring-2
+                            focus:ring-indigo-500">
+                            Book Now
+                        </button>
+                    </Transition>
+                </div>
             </div>
             <div class="col-span-2">
                 <ReviewList :booking-id="bookingId"></ReviewList>
