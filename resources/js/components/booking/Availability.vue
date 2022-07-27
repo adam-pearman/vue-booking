@@ -2,12 +2,17 @@
     <div class="text-left p-4">
         <h1 class="text-xl leading-6 font-medium text-gray-900 pb-3">
             Check Availability
-            <span v-if="noAvailability" class="text-red-600">
-                - NOT AVAILABLE
-            </span>
-            <span v-if="hasAvailability" class="text-green-600">
-                - AVAILABLE
-            </span>
+            <Transition enter-active-class="transition-opacity duration-500"
+                        enter-from-class="opacity-0"
+                        leave-active-class="transition-opacity duration-0"
+                        leave-to-class="opacity-0">
+                    <span v-if="noAvailability" class="text-red-600">
+                        - NOT AVAILABLE
+                    </span>
+                    <span v-else-if="hasAvailability" class="text-green-600">
+                        - AVAILABLE
+                    </span>
+            </Transition>
         </h1>
         <form @submit.prevent="check" class="grid grid-cols-2 gap-4">
             <div>
@@ -61,6 +66,7 @@ const from = ref(bookingStore.lastSearch.from);
 const to = ref(bookingStore.lastSearch.to);
 const status = ref(null);
 const errors = ref(null);
+
 const hasErrors = computed(() => status.value === 422 && errors.value !== null);
 const hasAvailability = computed(() => status.value === 200);
 const noAvailability = computed(() => status.value === 404);
