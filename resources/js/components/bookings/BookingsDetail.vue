@@ -3,7 +3,8 @@
         <div class="px-4 py-5 sm:p-6">
             <p class="font-medium text-lg">{{ title }}</p>
             <p>{{ description }}</p>
-            <p>£{{ price }}</p>
+            <br>
+            <p class="font-medium">£{{ price }}</p>
         </div>
     </router-link>
 </template>
