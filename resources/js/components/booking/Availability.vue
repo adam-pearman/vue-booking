@@ -43,7 +43,12 @@
                     class="col-span-2 px-4 py-2 border border-gray-500 shadow-sm text-base
                 font-medium rounded-md text-white bg-gray-500 hover:bg-gray-300 focus:outline-none focus:ring-2
                 focus:ring-indigo-500">
-                Check
+                <span v-if="!loading">
+                    Check
+                </span>
+                <span v-if="loading">
+                      Checking...
+                </span>
             </button>
         </form>
     </div>
