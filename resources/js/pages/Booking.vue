@@ -11,8 +11,8 @@
                 <p>{{ booking.description }}</p>
             </BaseCard>
             <div class="col-span-2 xl:col-span-1">
-                <availability :booking-id="bookingId"></availability>
-                <p class="text-center">£{{ booking.price }}</p>
+                <availability :booking-id="bookingId" @availability="checkPrice"></availability>
+                <p class="text-center font-medium">£{{ booking.price }}</p>
             </div>
             <div class="col-span-2">
                 <ReviewList :booking-id="bookingId"></ReviewList>
@@ -36,6 +36,7 @@ const route = useRoute();
 const bookingId = route.params.id ;
 const loading = ref(false);
 const booking = ref({});
+const price = ref(null);
 
 function getBooking() {
     loading.value = true;
@@ -44,6 +45,20 @@ function getBooking() {
             booking.value = response.data.data;
             loading.value = false;
         });
+}
+
+function checkPrice(hasAvailability) {
+    if (!hasAvailability) {
+        price.value = null;
+    } else {
+        axios.get(`/api/v1/bookings/${bookingId}/price?from=${bookingStore.lastSearch.from}&to=${bookingStore.lastSearch.to}`)
+            .then(response => {
+                price.value = response.data.data;
+            })
+            .catch(() => {
+                price.value = null;
+            })
+    }
 }
 
 bookingStore.loadStoredSearch();
