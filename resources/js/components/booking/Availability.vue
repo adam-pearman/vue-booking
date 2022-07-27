@@ -64,6 +64,8 @@ const props = defineProps({
     bookingId: String
 });
 
+const emit = defineEmits(['availability']);
+
 const bookingStore = useBookingStore();
 
 const loading = ref(false);
@@ -86,14 +88,19 @@ function check() {
     })
 
     axios.get(`/api/v1/bookings/${props.bookingId}/availability?from=${from.value}&to=${to.value}`)
-        .then(response => status.value = response.status)
+        .then(response => {
+            status.value = response.status;
+        })
         .catch(error => {
             if (useIsError(error, 422)) {
                 errors.value = error.response.data.errors;
             }
             status.value = error.response.status;
         })
-        .then(() => loading.value = false);
+        .then(() => {
+            loading.value = false;
+            emit('availability', hasAvailability.value);
+        });
 }
 
 function errorFor(field) {
