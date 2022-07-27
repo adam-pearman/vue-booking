@@ -41,7 +41,7 @@
             </div>
             <button type="submit"
                     class="col-span-2 px-4 py-2 border border-gray-500 shadow-sm text-base
-                font-medium rounded-md text-white bg-gray-500 hover:bg-gray-300 focus:outline-none focus:ring-2
+                font-medium rounded-md text-white bg-gray-500 hover:bg-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2
                 focus:ring-indigo-500">
                 <span v-if="!loading">
                     Check
