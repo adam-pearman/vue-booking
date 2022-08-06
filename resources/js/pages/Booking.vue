@@ -3,38 +3,41 @@
         <div v-if="loading" class="text-center">
             <p>Loading...</p>
         </div>
-        <div v-else class="grid xl:grid-cols-3 gap-10 w-3/4 mx-auto">
-            <BaseCard class="col-span-2">
-                <div class="bg-white pb-4 mb-4 border-b border-gray-200">
-                    <h1 class="text-xl font-medium text-gray-900">{{ booking.title }}</h1>
-                </div>
-                <p>{{ booking.description }}</p>
-            </BaseCard>
-            <div class="col-span-2 xl:col-span-1">
+        <div v-else class="flex flex-col gap-4 w-full mx-auto lg:gap-10 lg:flex-row">
+            <div class="flex flex-col gap-4 lg:gap-10 lg:w-2/3">
+                <BaseCard class="mx-4">
+                    <div class="bg-white pb-4 mb-4 border-b border-gray-200">
+                        <h1 class="text-xl font-medium text-gray-900">{{ booking.title }}</h1>
+                    </div>
+                    <p>{{ booking.description }}</p>
+                </BaseCard>
+                <ReviewList :booking-id="bookingId" class="hidden lg:block"></ReviewList>
+            </div>
+            <div class="lg:w-1/3">
                 <availability :booking-id="bookingId" @availability="checkPrice"></availability>
-                    <Transition enter-active-class="transition-opacity duration-500"
-                                enter-from-class="opacity-0"
-                                leave-active-class="transition-opacity duration-0"
-                                leave-to-class="opacity-0">
-                        <div class="grid grid-cols-2 gap-4 px-4 mt-4" v-if="price">
-                            <PriceBreakdown class="col-span-2" :price="price"/>
-                            <button @click="addToBasket"
-                                    :disabled="inBasketAlready"
-                                    type="submit"
-                                    class="col-span-2 px-4 py-2 mb-4 border border-gray-500 shadow-sm text-base
-                                font-medium rounded-md text-white bg-gray-500 hover:bg-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2
-                                focus:ring-indigo-500 disabled:bg-gray-300 disabled:text-gray-500">
-                                Book Now
-                            </button>
-                        </div>
-                    </Transition>
+                <Transition enter-active-class="transition-opacity duration-500"
+                            enter-from-class="opacity-0"
+                            leave-active-class="transition-opacity duration-0"
+                            leave-to-class="opacity-0">
+                    <div class="grid grid-cols-2 gap-4 px-4 mt-4" v-if="price">
+                        <PriceBreakdown class="col-span-2" :price="price"/>
+                        <button @click="addToBasket"
+                                :disabled="inBasketAlready"
+                                type="submit"
+                                class="col-span-2 px-4 py-2 mb-4 border border-gray-500 shadow-sm text-base
+                            font-medium rounded-md text-white bg-gray-500 hover:bg-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2
+                            focus:ring-indigo-500 disabled:bg-gray-300 disabled:text-gray-500">
+                            Book Now
+                        </button>
+                    </div>
+                </Transition>
                 <div class="grid grid-cols-2 gap-4 px-4">
                     <button @click="removeFromBasket"
                             v-if="inBasketAlready"
                             type="submit"
                             class="col-span-2 px-4 py-2 border border-gray-500 shadow-sm text-base
-                                font-medium rounded-md text-white bg-gray-500 hover:bg-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2
-                                focus:ring-indigo-500">
+                            font-medium rounded-md text-white bg-gray-500 hover:bg-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2
+                            focus:ring-indigo-500">
                         Remove From Basket
                     </button>
                     <div v-if="inBasketAlready" class="col-span-2 text-xs text-gray-500">
@@ -43,9 +46,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-span-2">
-                <ReviewList :booking-id="bookingId"></ReviewList>
-            </div>
+            <ReviewList :booking-id="bookingId" class="lg:hidden"></ReviewList>
         </div>
     </div>
 </template>
