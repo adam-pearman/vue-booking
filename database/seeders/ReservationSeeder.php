@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Booking;
 use App\Models\Reservation;
+use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,7 +17,9 @@ class ReservationSeeder extends Seeder
      */
     public function run()
     {
-        Booking::all()->each(function (Booking $booking) {
+        $faker = Factory::create();
+
+        Booking::all()->each(function (Booking $booking) use ($faker) {
             $reservation = Reservation::factory()->make();
             $reservations = collect([$reservation]);
 
@@ -27,6 +30,7 @@ class ReservationSeeder extends Seeder
                 $reservation = Reservation::make([
                     'from' => $from,
                     'to' => $to,
+                    'price' => $faker->numberBetween(1000, 5000),
                 ]);
                 $reservations->push($reservation);
             }

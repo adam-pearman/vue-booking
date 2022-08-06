@@ -22,6 +22,7 @@ class ReservationFactory extends Factory
         return [
             'from' => $from,
             'to' => $to,
+            'price' => $this->faker->numberBetween(1000, 5000),
         ];
     }
 }
