@@ -1,6 +1,50 @@
 <template>
-    <div class="flex w-full container mx-auto">
-        <div class="w-2/3">Checkout Form</div>
+    <div class="flex w-3/4 container mx-auto gap-10">
+        <form class="w-2/3 grid grid-cols-2 gap-4 h-min">
+            <div class="col-span-1 flex flex-col gap-2">
+                <label for="firstname">First Name</label>
+                <input type="text" name="firstname" id="firstname" class="rounded">
+            </div>
+            <div class="col-span-1 flex flex-col gap-2">
+                <label for="lastname">Last Name</label>
+                <input type="text" name="lastname" id="lastname" class="rounded">
+            </div>
+            <div class="col-span-2 flex flex-col gap-2">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" class="rounded">
+            </div>
+            <div class="col-span-1 flex flex-col gap-2">
+                <label for="street">Street</label>
+                <input type="text" name="street" id="street" class="rounded">
+            </div>
+            <div class="col-span-1 flex flex-col gap-2">
+                <label for="city">City</label>
+                <input type="text" name="city" id="city" class="rounded">
+            </div>
+            <div class="col-span-1 flex flex-col gap-2">
+                <label for="country">Country</label>
+                <input type="text" name="country" id="country" class="rounded">
+            </div>
+            <div class="col-span-1 flex gap-4">
+                <div class="flex flex-col w-2/3 gap-2">
+                    <label for="county">County</label>
+                    <input type="text" name="county" id="county" class="rounded">
+                </div>
+                <div class="flex flex-col w-1/3 gap-2">
+                    <label for="postcode">Postcode</label>
+                    <input type="text" name="postcode" id="postcode" class="rounded">
+                </div>
+            </div>
+            <hr class="col-span-2 my-2 border-gray-300"/>
+            <button @click="addToBasket"
+                    :disabled="inBasketAlready"
+                    type="submit"
+                    class="col-span-2 w-full px-4 py-2 mb-4 border border-gray-500 shadow-sm text-base
+                        font-medium rounded-md text-white bg-gray-500 hover:bg-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2
+                        focus:ring-indigo-500 disabled:bg-gray-300 disabled:text-gray-500">
+                Book Now!
+            </button>
+        </form>
         <div class="w-1/3">
             <div class="flex justify-between">
                 <h3 class="font-medium text-2xl">Your Cart</h3>
@@ -13,30 +57,34 @@
                     </span>
                 </span>
             </div>
-            <div v-for="item in checkoutStore.basket.items" :key="item.booking.id">
-                <div class="py-2 flex border border-t-gray-500 justify-between font-medium">
+            <TransitionGroup leave-active-class="transition duration-500 absolute w-full"
+                             leave-to-class="opacity-0 translate-x-full"
+                             move-class="transition duration-500">
+                <div v-for="item in checkoutStore.basket.items" :key="item.booking.id">
+                    <div class="py-2 flex border border-t-gray-500 justify-between font-medium">
                     <span class="hover:opacity-50">
                         <router-link :to="{name: 'booking', params: {id: item.booking.id}}">{{ item.booking.title }}</router-link>
                     </span>
-                    <span>
+                        <span>
                         £{{ item.price.total }}
                     </span>
-                </div>
-                <div class="py-2 flex justify-between">
+                    </div>
+                    <div class="py-2 flex justify-between">
                     <span>
                         From: {{ format(new Date(item.dates.from), 'dd/MM/yyyy') }}
                     </span>
-                    <span>
+                        <span>
                         To: {{ format(new Date(item.dates.to), 'dd/MM/yyyy') }}
                     </span>
-                </div>
-                <div class="w-full flex justify-end">
-                    <div class="group p-1 w-8 h-8 mb-2 border border-gray-500 rounded-md flex place-content-center cursor-pointer hover:bg-gray-500"
-                         @click="checkoutStore.removeFromBasket(item.booking.id)">
-                        <TrashIcon class="fill-gray-500 group-hover:fill-white"/>
+                    </div>
+                    <div class="w-full flex justify-end">
+                        <div class="group p-1 w-8 h-8 mb-2 border border-gray-500 rounded-md flex place-content-center cursor-pointer hover:bg-gray-500"
+                             @click="checkoutStore.removeFromBasket(item.booking.id)">
+                            <TrashIcon class="fill-gray-500 group-hover:fill-white"/>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </TransitionGroup>
         </div>
     </div>
 </template>
