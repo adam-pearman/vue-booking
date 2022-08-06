@@ -34,5 +34,10 @@ export const useCheckoutStore = defineStore('checkout', () => {
         }
     }
 
-    return {basket, itemsInBasket, addToBasket, removeFromBasket, inBasketAlready, loadStoredBasket};
+    function clearBasket() {
+        basket.value.items = [];
+        localStorage.setItem('basket', JSON.stringify(basket.value));
+    }
+
+    return {basket, itemsInBasket, addToBasket, removeFromBasket, inBasketAlready, loadStoredBasket, clearBasket};
 });
