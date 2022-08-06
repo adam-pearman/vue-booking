@@ -25,6 +25,11 @@ const routes = [
         path: '/review/:id',
         component: () => import('./pages/Review'),
         name: 'review'
+    },
+    {
+        path: '/basket',
+        component: () => import('./pages/Basket'),
+        name: 'basket'
     }
 ];
 
