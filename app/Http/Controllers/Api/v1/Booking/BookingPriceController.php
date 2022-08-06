@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\v1\Booking;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -23,16 +22,8 @@ class BookingPriceController extends Controller
             'to' => 'required|date_format:Y-m-d|after_or_equal:from'
         ]);
 
-        $days = (new Carbon($data['from']))->diffInDays(new Carbon($data['to'])) + 1;
-        $price = $days * $booking->price;
-
         return response()->json([
-            'data' => [
-                'total' => $price,
-                'breakdown' => [
-                    $booking->price => $days
-                ]
-            ]
+            'data' => $booking->priceFor($data['from'], $data['to'])
         ]);
     }
 }
