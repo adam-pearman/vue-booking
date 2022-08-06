@@ -8,7 +8,7 @@
             <div v-if="bookings.length === 0">
                 <p>Sorry, there is nothing to book right now!</p>
             </div>
-            <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-3/4 mx-auto pb-5">
+            <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-auto pb-5">
                 <BookingsDetail
                     v-for="booking in bookings"
                     :key="booking.id"

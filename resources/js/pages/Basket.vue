@@ -5,8 +5,8 @@
                 Congratulations on your purchase!
             </Success>
         </div>
-        <div v-else class="flex w-3/4 container mx-auto gap-10">
-            <form class="w-2/3 grid grid-cols-2 gap-4 h-min">
+        <div v-else class="flex container mx-auto gap-10">
+            <form class="w-1/2 grid grid-cols-2 gap-4 h-min">
                 <div class="col-span-1 flex flex-col gap-2">
                     <label for="firstname">First Name</label>
                     <input type="text" name="firstname" id="firstname" class="rounded" v-model="customer.first_name" :class="{'border-red-600': errorFor('customer.first_name')}">
@@ -62,7 +62,7 @@
                     Oops! It looks like your basket is empty. Please add one or more bookings to checkout.
                 </div>
             </form>
-            <div class="w-1/3">
+            <div class="w-1/4 ml-auto">
                 <div class="flex justify-between">
                     <h3 class="font-medium text-2xl">Your Cart</h3>
                     <span class="inline-flex items-center px-3 py-0.5 rounded-md text-sm font-medium bg-gray-500 text-white mb-4">
