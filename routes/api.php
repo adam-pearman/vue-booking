@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\v1\Checkout\CheckoutController;
 use App\Http\Controllers\Api\v1\Booking\BookingAvailabilityController;
 use App\Http\Controllers\Api\v1\Booking\BookingController;
 use App\Http\Controllers\Api\v1\Booking\BookingPriceController;
 use App\Http\Controllers\Api\v1\Booking\BookingReviewController;
+use App\Http\Controllers\Api\v1\Checkout\CheckoutController;
 use App\Http\Controllers\Api\v1\Reservation\ReservationByReviewController;
 use App\Http\Controllers\Api\v1\Review\ReviewController;
 use Illuminate\Http\Request;
