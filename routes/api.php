@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Api\v1\BookingAvailabilityController;
-use App\Http\Controllers\Api\v1\BookingPriceController;
-use App\Http\Controllers\Api\v1\ReservationByReviewController;
-use App\Http\Controllers\Api\v1\BookingController;
-use App\Http\Controllers\Api\v1\BookingReviewController;
-use App\Http\Controllers\Api\v1\ReviewController;
+use App\Http\Controllers\Api\v1\Checkout\CheckoutController;
+use App\Http\Controllers\Api\v1\Booking\BookingAvailabilityController;
+use App\Http\Controllers\Api\v1\Booking\BookingController;
+use App\Http\Controllers\Api\v1\Booking\BookingPriceController;
+use App\Http\Controllers\Api\v1\Booking\BookingReviewController;
+use App\Http\Controllers\Api\v1\Reservation\ReservationByReviewController;
+use App\Http\Controllers\Api\v1\Review\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,4 +38,6 @@ Route::prefix('v1')->group(function () {
         ->name('reservation.by-review.show');
 
     Route::apiResource('reviews', ReviewController::class)->only(['store', 'show']);
+
+    Route::post('checkout', CheckoutController::class)->name('checkout');
 });
