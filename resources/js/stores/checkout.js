@@ -11,10 +11,12 @@ export const useCheckoutStore = defineStore('checkout', () => {
 
     function addToBasket(payload) {
         basket.value.items.push(payload);
+        localStorage.setItem('basket', JSON.stringify(basket.value));
     }
 
     function removeFromBasket(payload) {
-        basket.value.items = basket.value.items.filter(item => item.booking.id !== payload)
+        basket.value.items = basket.value.items.filter(item => item.booking.id !== payload);
+        localStorage.setItem('basket', JSON.stringify(basket.value));
     }
 
     function inBasketAlready(id) {
@@ -24,5 +26,13 @@ export const useCheckoutStore = defineStore('checkout', () => {
         );
     }
 
-    return {basket, itemsInBasket, addToBasket, removeFromBasket, inBasketAlready};
+    function loadStoredBasket() {
+        const storedBasket = localStorage.getItem('basket');
+
+        if (storedBasket) {
+            basket.value = JSON.parse(storedBasket);
+        }
+    }
+
+    return {basket, itemsInBasket, addToBasket, removeFromBasket, inBasketAlready, loadStoredBasket};
 });
