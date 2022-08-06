@@ -18,14 +18,30 @@
                                 leave-to-class="opacity-0">
                         <div class="grid grid-cols-2 gap-4 px-4 mt-4" v-if="price">
                             <PriceBreakdown class="col-span-2" :price="price"/>
-                            <button type="submit"
-                                    class="col-span-2 px-4 py-2 border border-gray-500 shadow-sm text-base
-                                font-medium rounded-md text-gray-500 300 hover:bg-gray-500 hover:text-white focus:outline-none focus:ring-2
-                                focus:ring-indigo-500">
+                            <button @click="addToBasket"
+                                    :disabled="inBasketAlready"
+                                    type="submit"
+                                    class="col-span-2 px-4 py-2 mb-4 border border-gray-500 shadow-sm text-base
+                                font-medium rounded-md text-white bg-gray-500 hover:bg-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2
+                                focus:ring-indigo-500 disabled:bg-gray-300 disabled:text-gray-500">
                                 Book Now
                             </button>
                         </div>
                     </Transition>
+                <div class="grid grid-cols-2 gap-4 px-4">
+                    <button @click="removeFromBasket"
+                            v-if="inBasketAlready"
+                            type="submit"
+                            class="col-span-2 px-4 py-2 border border-gray-500 shadow-sm text-base
+                                font-medium rounded-md text-white bg-gray-500 hover:bg-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2
+                                focus:ring-indigo-500">
+                        Remove From Basket
+                    </button>
+                    <div v-if="inBasketAlready" class="col-span-2 text-xs text-gray-500">
+                        It looks like this item is already in your basket. If you'd like to amend your dates,
+                        please first remove this item from your basket.
+                    </div>
+                </div>
             </div>
             <div class="col-span-2">
                 <ReviewList :booking-id="bookingId"></ReviewList>
@@ -36,21 +52,31 @@
 
 <script setup>
 import {useRoute} from 'vue-router';
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
 import axios from 'axios';
 import BaseCard from '../components/ui/BaseCard';
 import Availability from "../components/booking/Availability";
 import ReviewList from "../components/booking/ReviewList";
 import {useBookingStore} from "../stores/booking";
 import PriceBreakdown from '../components/booking/PriceBreakdown';
+import {useCheckoutStore} from "../stores/checkout";
 
 const bookingStore = useBookingStore();
+const checkoutStore = useCheckoutStore();
 
 const route = useRoute();
 const bookingId = route.params.id ;
 const loading = ref(false);
 const booking = ref({});
 const price = ref(null);
+
+const inBasketAlready = computed(() => {
+    if (booking.value === null) {
+        return false;
+    }
+
+    return checkoutStore.inBasketAlready(booking.value.id)
+})
 
 function getBooking() {
     loading.value = true;
@@ -73,6 +99,18 @@ function checkPrice(hasAvailability) {
                 price.value = null;
             })
     }
+}
+
+function addToBasket() {
+    checkoutStore.addToBasket({
+        booking: booking.value,
+        price: price.value,
+        dates: bookingStore.lastSearch,
+    });
+}
+
+function removeFromBasket() {
+    checkoutStore.removeFromBasket(booking.value.id);
 }
 
 bookingStore.loadStoredSearch();
