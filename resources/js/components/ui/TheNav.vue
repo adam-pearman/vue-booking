@@ -19,4 +19,5 @@
 import {useCheckoutStore} from "../../stores/checkout";
 
 const checkoutStore = useCheckoutStore();
+checkoutStore.loadStoredBasket();
 </script>
