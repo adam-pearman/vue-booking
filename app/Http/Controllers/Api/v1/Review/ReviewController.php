@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1;
+namespace App\Http\Controllers\Api\v1\Review;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReviewResource;
 use App\Models\Reservation;
 use App\Models\Review;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class ReviewController extends Controller
 {
