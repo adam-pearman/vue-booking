@@ -18,6 +18,11 @@ class Reservation extends Model
         'to'
     ];
 
+    public function address(): BelongsTo
+    {
+        return $this->belongsTo(Address::class);
+    }
+
     public function booking(): BelongsTo
     {
         return $this->belongsTo(Booking::class);
