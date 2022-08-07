@@ -30,6 +30,11 @@ const routes = [
         path: '/basket',
         component: () => import('./pages/Basket'),
         name: 'basket'
+    },
+    {
+        path: '/login',
+        component: () => import('./pages/Auth/LoginPage'),
+        name: 'login'
     }
 ];
 
