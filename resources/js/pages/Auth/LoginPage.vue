@@ -76,15 +76,18 @@ import ValidationErrors from "../../components/ui/ValidationErrors"
 import {ref, computed} from "vue";
 import {useIsError} from "../../utils/useMethods";
 import {useAuthStore} from "../../stores/auth";
+import {storageLogin} from "../../utils/useAuthHelpers";
+import {useRouter} from "vue-router";
 
 const authStore = useAuthStore();
+const router = useRouter();
+
 const loading = ref(false);
 const errors = ref(null);
-const status = ref(null);
 const form = ref({
     email: '',
     password: '',
-    remember: false,
+    remember: true,
 })
 
 const hasErrors = computed(() => status.value === 422 && errors.value !== null);
@@ -102,12 +105,13 @@ function login() {
             remember: form.value.remember,
         }).then(() => {
             errors.value = null;
+            storageLogin();
             authStore.getAuthUser();
+            router.push({name: 'home'});
         }).catch((error) => {
             if (useIsError(error, 422)) {
                 errors.value = error.response.data.errors;
             }
-            status.value = error.response.status;
         }).then(() => {
             loading.value=false;
         });
