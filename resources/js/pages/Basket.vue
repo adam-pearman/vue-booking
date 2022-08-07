@@ -120,6 +120,7 @@ import Success from "../components/ui/Success"
 const checkoutStore = useCheckoutStore();
 
 const loading = ref(false);
+const status = ref(null);
 const errors = ref(null);
 const bookingSuccessful= ref(false);
 
@@ -149,12 +150,14 @@ function book() {
             to: basketItem.dates.to,
         }))
     }).then((response) => {
+        status.value = response.status;
         bookingSuccessful.value = true;
         checkoutStore.clearBasket();
     }).catch((error) => {
         if (useIsError(error, 422)) {
             errors.value = error.response.data.errors;
         }
+        status.value = error.response.status;
     }).then(() => {
         loading.value = false;
     });

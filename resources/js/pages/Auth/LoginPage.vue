@@ -2,11 +2,11 @@
     <div class="h-full flex items-center justify-center pb-12 px-4 sm:px-6 lg:px-8 fixed top-12 left-0 right-0">
         <div class="max-w-md w-full space-y-8">
             <div>
-                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign In to Your Account</h2>
+                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Login to Your Account</h2>
                 <p class="mt-2 text-center text-gray-600">
                     Or
                     {{ ' ' }}
-                    <a href="#" class="font-medium hover:opacity-50"> register </a>
+                    <router-link :to="{ name: 'register' }" class="font-medium hover:opacity-50"> register </router-link>
                     {{ ' '}}
                     if you don't have one yet.
                 </p>
@@ -83,6 +83,7 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 const loading = ref(false);
+const status = ref(null);
 const errors = ref(null);
 const form = ref({
     email: '',
@@ -103,15 +104,17 @@ function login() {
             email: form.value.email,
             password: form.value.password,
             remember: form.value.remember,
-        }).then(() => {
+        }).then((response) => {
             errors.value = null;
+            status.value = response.status;
             storageLogin();
             authStore.getAuthUser();
-            router.push({name: 'home'});
+            router.go(-1);
         }).catch((error) => {
             if (useIsError(error, 422)) {
                 errors.value = error.response.data.errors;
             }
+            status.value = error.response.status;
         }).then(() => {
             loading.value=false;
         });

@@ -22,16 +22,19 @@
                     <div class="grid grid-cols-2 gap-4 px-4 mt-4" v-if="price">
                         <PriceBreakdown class="col-span-2" :price="price"/>
                         <button @click="addToBasket"
-                                :disabled="inBasketAlready"
+                                :disabled="inBasketAlready || !authStore.isLoggedIn"
                                 type="submit"
                                 class="col-span-2 px-4 py-2 mb-4 border border-gray-500 shadow-sm text-base
                             font-medium rounded-md text-white bg-gray-500 hover:bg-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2
                             focus:ring-indigo-500 disabled:bg-gray-300 disabled:text-gray-500">
                             Book Now
                         </button>
+                        <div v-if="!authStore.isLoggedIn" class="col-span-2 text-xs text-gray-500">
+                            Please register or login to make a reservation.
+                        </div>
                     </div>
                 </Transition>
-                <div class="grid grid-cols-2 gap-4 px-4">
+                <div v-if="authStore.isLoggedIn" class="grid grid-cols-2 gap-4 px-4">
                     <button @click="removeFromBasket"
                             v-if="inBasketAlready"
                             type="submit"
@@ -61,7 +64,9 @@ import ReviewList from "../components/booking/ReviewList";
 import {useBookingStore} from "../stores/booking";
 import PriceBreakdown from '../components/booking/PriceBreakdown';
 import {useCheckoutStore} from "../stores/checkout";
+import {useAuthStore} from "../stores/auth";
 
+const authStore = useAuthStore();
 const bookingStore = useBookingStore();
 const checkoutStore = useCheckoutStore();
 

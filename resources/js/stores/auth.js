@@ -4,7 +4,7 @@ import {hasStorageLogin, storageLogout} from "../utils/useAuthHelpers";
 
 export const useAuthStore = defineStore('auth', () => {
     const user = ref({});
-    const isLoggedIn = ref(false);
+    const isLoggedIn = ref(hasStorageLogin());
 
     function getAuthUser() {
         if (hasStorageLogin()) {

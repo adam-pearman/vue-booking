@@ -1,20 +1,11 @@
 import {createRouter, createWebHistory} from "vue-router";
+import {hasStorageLogin} from "./utils/useAuthHelpers";
 
 const routes = [
     {
         path: '/',
-        component: () => import('./pages/Home'),
-        name: 'home'
-    },
-    {
-        path: '/contact',
-        component: () => import('./pages/Contact'),
-        name: 'contact'
-    },
-    {
-        path: '/bookings',
         component: () => import('./pages/Bookings'),
-        name: 'bookings'
+        name: 'home'
     },
     {
         path: '/bookings/:id',
@@ -29,12 +20,18 @@ const routes = [
     {
         path: '/basket',
         component: () => import('./pages/Basket'),
-        name: 'basket'
+        name: 'basket',
+        meta: { requiresAuth: true },
     },
     {
         path: '/login',
         component: () => import('./pages/Auth/LoginPage'),
         name: 'login'
+    },
+    {
+        path: '/register',
+        component: () => import('./pages/Auth/RegistrationPage'),
+        name: 'register'
     }
 ];
 
@@ -42,5 +39,25 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 });
+
+router.beforeEach((to) => {
+    if (to.name === 'login' && hasStorageLogin()) {
+        return {
+            path: '/'
+        }
+    }
+
+    if (to.name === 'register' && hasStorageLogin()) {
+        return {
+            path: '/'
+        }
+    }
+
+    if (to.meta.requiresAuth && !hasStorageLogin()) {
+        return {
+            path: '/'
+        }
+    }
+})
 
 export default router;

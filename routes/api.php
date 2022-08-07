@@ -39,5 +39,5 @@ Route::prefix('v1')->group(function () {
 
     Route::apiResource('reviews', ReviewController::class)->only(['store', 'show']);
 
-    Route::post('checkout', CheckoutController::class)->name('checkout');
+    Route::post('checkout', CheckoutController::class)->name('checkout')->middleware('auth:sanctum');
 });
