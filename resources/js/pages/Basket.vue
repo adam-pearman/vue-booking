@@ -121,7 +121,6 @@ const checkoutStore = useCheckoutStore();
 
 const loading = ref(false);
 const errors = ref(null);
-const status = ref(null);
 const bookingSuccessful= ref(false);
 
 const hasErrors = computed(() => status.value === 422 && errors.value !== null);
@@ -150,14 +149,12 @@ function book() {
             to: basketItem.dates.to,
         }))
     }).then((response) => {
-        status.value = response.status;
         bookingSuccessful.value = true;
         checkoutStore.clearBasket();
     }).catch((error) => {
         if (useIsError(error, 422)) {
             errors.value = error.response.data.errors;
         }
-        status.value = error.response.status;
     }).then(() => {
         loading.value = false;
     });
