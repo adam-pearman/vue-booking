@@ -1,17 +1,27 @@
 import {defineStore} from "pinia";
-import {ref, computed} from "vue";
+import {ref} from "vue";
+import {hasStorageLogin, storageLogout} from "../utils/useAuthHelpers";
 
 export const useAuthStore = defineStore('auth', () => {
     const user = ref({});
-    const isLoggedIn = computed(() => Object.keys(user.value).length !== 0);
+    const isLoggedIn = ref(false);
 
     function getAuthUser() {
-        axios.get('/api/user').then((response) => {
-            user.value = response.data;
-        }).catch(() => {
-            user.value = {};
-        })
+        if (hasStorageLogin()) {
+            axios.get('/api/user').then((response) => {
+                user.value = response.data;
+                isLoggedIn.value = true;
+            }).catch(() => {
+                logout();
+            });
+        }
     }
 
-    return {user, isLoggedIn, getAuthUser}
+    function logout() {
+        user.value = {};
+        isLoggedIn.value = false;
+        storageLogout();
+    }
+
+    return {user, isLoggedIn, getAuthUser, logout}
 })
